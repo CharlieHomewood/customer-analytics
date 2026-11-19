@@ -1,0 +1,12 @@
+title: CH Presentation Theme
+author: Charlie Homewood
+version: 0.1.0
+quarto-required: ">=1.6.0"
+
+contributes:
+  formats:
+    beamer:
+      pdf-engine: lualatex
+      template: template.tex
+      include-in-header:
+        - theme.sty

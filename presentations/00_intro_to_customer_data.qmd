@@ -1,0 +1,123 @@
+---
+title: "Customer Analytics"
+subtitle: "#1 An Introduction to Customer Data"
+author: "Charlie Homewood"
+github: "https://github.com/CharlieHomewood"
+github-qr: true
+format:
+    ch-presentation-theme-beamer:
+        slide-level: 2
+bibliography: Exported Items.bib
+---
+
+## Who am I?
+
+:::: {.columns}
+
+::: {.column width=50%}
+### **I'm Charlie!**
+
+ * I've recently graduated from the University of Sussex, studying MSc Data Science.
+ * I've previously worked as a data analyst in a couple of domains:
+     * Buliding safety for local government.
+     * Customer and marketing analytics.
+ * I love learning about data science, statistics & AI. 
+ * I want to leverage the tools of data science to help make a positive impact for others.
+:::
+
+::: {.column width=50%}
+\centering
+\vspace*{\fill}
+![](assets/me.png){width=80%}
+\vspace*{\fill}
+:::
+
+::::
+
+## Introduction
+
+### This is part 1 of a project focusing on **customer analytics**.
+
+ * In this project, I'll aim to cover different areas of customer analytics, showing how we go from raw data to a tangible, useable analytics solution a business would benefit from.
+
+### In this first presentation, I'll explore what **customer data** is...
+
+ * I'll cover what customer data is, common ways businesses collect and store customer data and what kinds of data are useful for analysis.
+     * This will help set the scene for the following parts of this project where we will explore some key methodologies in customer analytics and how we can practically apply them to deliver tangible business value.
+
+# *"What is a Customer?"*
+
+## It's Fairly Common Sense...
+
+### *"A customer is a person who purchases a good or service from a business."*
+
+ * We can be more precise...
+     * A customer whose purchases *for the purpose of consumption* (direct or indirect).
+     * We might care about those who purchase but do not consume, i.e. resell (traders).
+         * E.g. Multi-seller e-commerce (eBay, Amazon).
+
+### Customers do not behave in the same way
+
+ * Customer behaviour varies due to intrinsic characteristics and extrinsic factors.
+     * **This is the core assumption of customer analytics.**
+     * Customer behaviour is not random.
+         * That doesn't mean we can't use randomness to understand customer behaviour...
+
+## Representing Customers in Data
+
+### A note on collecting and using customer data...
+
+ * Don't collect customer (or any) data for the sake of it.
+     * You always need a reason for having data - customer or otherwise.
+     * Data is only meaningful when used as evidence to solve a problem. 
+         * If you don't have a problem to solve, you don't need any data.
+         * But since you probably do have a problem to solve, think about what it is and what data would help solve it.
+ * General Data Protection Regulation (GDPR) is very important for customer data!
+     * Accidents are common 
+         * Human error is estimated to account for 
+     * So taking some time to become aware of GDPR compliance is worthwhile.
+
+## Representing Customers in Data
+
+### Customers can be represented in data in many ways...
+
+ * Personally identifiable information (PII)
+     * Names, emails, age, demographics, addresses, socioeconomic status.
+     * **This needs to be handled very carefully!** (GDPR compliance).
+ * Transactions data
+     * 
+
+## Customer Data
+
+\bigskip
+
+### What problems can customer data help solve?
+
+ * Customer retention, customer acquisition, marketing efficacy, CLV optimsation, customer personalisation, demand forecasting, inventory planning...
+ * Within any of these areas, we might have more specific questions to answer
+     * Customer retention: Which customers are most likely to leave? How can we prevent that?
+     * CLV optimisation: Which customers could we increase the lifetime value of the most and how?
+
+\bigskip
+\bigskip
+
+In short, analysing customer data helps you find ways to accumulate more revenue from customers or lower costs involving in attracting or keeping them. 
+
+# *"So how do businesses collect customer data?"*
+
+## Collecting Customer Data
+
+\bigskip
+
+ * There are some common ways of collecting customer data:
+     * Online transaction processing (OLTP) databases
+     * Customer relationship management (CRM) systems (e.g. Salesforce, HubSpot).
+     * Web analytics platforms (e.g. GA4, Microsoft Clarity).
+     * Reviews & surveys (e.g. Google reviews, Trustpilot, Tripadvisor).
+
+\bigskip
+\bigskip
+
+These data collection methods determine what information we have available for analysis and thus which problems we can solve.
+
+## References

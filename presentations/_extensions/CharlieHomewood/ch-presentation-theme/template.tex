@@ -1,0 +1,120 @@
+\documentclass[aspectratio=169]{beamer}
+
+$if(fonttheme)$
+\usefonttheme{$fonttheme$}
+$endif$
+
+$for(header-includes)$
+$header-includes$
+$endfor$
+
+\title{$title$}
+
+$if(subtitle)$
+\subtitle{$subtitle$}
+$endif$
+
+$if(author)$
+\author{$author$}
+$endif$
+
+$if(date)$
+\date{$date$}
+$else$
+\date{}
+$endif$
+
+\begin{document}
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+\providecommand{\citeproctext}{}
+\providecommand{\citeproc}[2]{\hyperlink{#1}{#2}}
+
+\newenvironment{CSLReferences}[2]
+  {\begin{list}{}{\setlength{\leftmargin}{0pt}
+   \setlength{\itemindent}{0pt}
+   \setlength{\itemsep}{\parskip}
+   \setlength{\parsep}{0pt}
+   \setlength{\labelwidth}{0pt}
+   \setlength{\labelsep}{0pt}
+   \setlength{\listparindent}{0pt}
+   \renewcommand{\makelabel}[1]{}}}
+  {\end{list}}
+  
+\newcommand{\CSLLeftMargin}[1]{\hspace*{#1}}
+\newcommand{\CSLRightInline}[1]{#1}
+\newcommand{\CSLIndent}[1]{\hspace*{#1}}
+
+\begin{frame}[plain]
+  \begin{center}
+
+    \vspace{1.5cm}
+
+    {\usebeamerfont{title}
+    \usebeamercolor[fg]{title}
+    \MakeUppercase{\inserttitle}\par}
+
+    $if(subtitle)$
+    \vspace{0.5em}
+
+    {\usebeamerfont{subtitle}
+    \usebeamercolor[fg]{subtitle}
+    \titlecap{\insertsubtitle}\par}
+    $endif$
+
+    \vspace{1em}
+
+    $if(author)$
+    \vspace{0.5em}
+
+    {\usebeamerfont{author}
+    \usebeamercolor[fg]{author}
+    \insertauthor\par}
+    $endif$
+
+    \vspace{1em}
+
+    $if(date)$
+    \vspace{0.5em}
+
+    {\usebeamerfont{date}
+     \insertdate\par}
+    $endif$
+
+  \end{center}
+\end{frame}
+
+$body$
+
+$if(github)$
+$if(github-qr)$
+
+\begin{frame}[plain]
+  \begin{center}
+
+    \vfill
+
+    {\usebeamerfont{title}
+     \usebeamercolor[fg]{title}
+     Thank You!\par}
+
+    \vspace{1em}
+
+    \qrcode[height=3cm]{$github$}
+
+    \vspace{1em}
+
+    {\small
+     \href{$github$}{\texttt{$github$}}\par}
+
+    \vfill
+
+  \end{center}
+\end{frame}
+
+$endif$
+$endif$
+
+\end{document}

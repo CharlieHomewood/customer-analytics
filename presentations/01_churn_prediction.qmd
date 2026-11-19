@@ -1,0 +1,146 @@
+---
+title: "Customer Analytics"
+subtitle: "Customer Churn Prediction"
+author: "Charlie Homewood"
+github: "https://github.com/CharlieHomewood"
+github-qr: true
+format:
+    ch-presentation-theme-beamer:
+        slide-level: 2
+bibliography: Exported Items.bib
+---
+
+# Introduction
+
+## Introduction
+
+### **I'm Charlie!**
+
+ * I've recently graduated from the University of Sussex, studying MSc Data Science.
+ * I've previously worked as a data analyst in a couple of domains:
+     * Buliding safety for local government.
+     * Customer and marketing analytics.
+
+## Introduction
+
+### This is part 1 of a project focusing on **customer analytics**.
+
+ * In this project, I'll aim to cover different areas of customer analytics, showing how we go from raw data to a tangible, useable analytics solution a business would benefit from.
+
+## Introduction
+
+### In this first presentation, I'll cover **churn prediction**.
+
+ * We'll build a predictive model, deploy it and provide a user-friendly app to provide real-time insights using a previously-unseen sample of *new customers*.
+
+# *"Why Should I Care About Customer Churn?"*
+
+## Customer Churn is Very Important!
+
+### Customer churn = when customers **stop interacting with the business**.
+
+:::: {.columns}
+
+::: {.column width="50%"}
+#### ~ Low churn ~
+
+ * Low churn is great, customers stay for the long-term and frequently spend.
+     * This helps the business actually gain their customer's lifetime value. 
+     * Also builds trust and loyalty that makes the business more appealing to new customers.
+:::
+
+::: {.column width="50%"}
+#### ~ High churn ~
+
+ * High churn means people who purchase from the business don't stick around. 
+     * We don't get to realise a customer's potential lifetime value if they leave!
+     * If the churn is due to poor customer experiences, this might cascade via negative reviews.
+
+:::
+
+::::
+
+### **So customer churn is really bad!**
+
+## Addressing Churn is Easier than Finding New Customers!
+
+\bigskip
+\bigskip
+
+### It's usually much cheaper (time, money, effort) to **activate existing customers** than to find new ones!
+
+ * McKinsey & Company estimate the value lost from **losing just 1 existing customer** equates to the value of acquiring **3 new customers** [@downieWhatCustomerChurn2024].
+
+\bigskip
+\bigskip
+\bigskip
+
+### Of course, new customers are great but keeping them for the long-term is even better!
+
+# *"Okay, So How Do We Measure Customer Churn?"*
+
+## Measuring Customer Churn
+
+\bigskip
+
+### How do we know when a customer has stopped interacting?
+
+:::: {.columns}
+
+::: {.column width="50%"}
+On one extreme, the **exact moment the customer made their most recent purchase** is when they stopped interacting.
+
+ * Any time elapsed after this moment is spend not interacting, so surely they must have churned...
+
+:::
+
+::: {.column width="50%"}
+On the other extreme, a customer **never can stop interacting** because they could always make a purchase at some point in the future.
+
+ * We don't know when they might interact again, so we can't be sure they've churned.
+:::
+
+::::
+
+\bigskip
+\bigskip
+
+### Clearly, churn is somewhere between these two extremes...
+
+## Measuring Customer Churn
+
+### The middle ground
+
+ * How many customers stop interacting **within some finite window of time?**
+
+\bigskip
+
+### Churn Rate
+
+$$
+C_{\text{rate}} = \left(\frac{\text{\# of Customers who left during time window}}{\text{Total \# of Customers at start of time window}}\right) \times 100
+$$
+
+#### What should the time window be?
+
+ * Weekly, Monthly, Quarterly, Annually, etc.
+ * It depends on the business model...
+     * For instance, a SaaS model might benefit from viewing churn on a monthly basis, since this model offers monthly subscriptions.
+
+## Measuring Customer Churn
+
+### We can measure churn via transactions data
+
+ * Looking at the number of transactions made by each customer in a given time window shows 
+
+## CLassifer stuff
+
+### What is your business aim?
+
+ * Your overall goal affects how we measure the performance of our classifier models
+     * If identifying churners is cruicial, then we want to focus on *precision*
+     * If minimising the cost of retention marketing campaigns, we want to focus on *recall*
+     * If we want a mix of both, we can use the *F1-Score*
+         * Or a weighted mix of both (e.g. 70:30), we can use a 
+
+## References

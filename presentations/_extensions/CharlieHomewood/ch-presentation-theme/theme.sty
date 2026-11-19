@@ -1,0 +1,55 @@
+\ProvidesPackage{ch-presentation-theme}
+
+\RequirePackage{fontspec}
+\RequirePackage{xcolor}
+\RequirePackage{hyperref}
+\RequirePackage{qrcode}
+\RequirePackage{titlecaps}
+
+\setmainfont{Spectral}
+
+\usefonttheme{serif}
+
+% Colours
+\definecolor{accent}{HTML}{D95F02}
+\definecolor{lightblue}{HTML}{EAF4FB}
+
+% Background
+\setbeamercolor{background canvas}{bg=lightblue}
+
+% Text
+\setbeamercolor{normal text}{fg=black}
+
+% Headings
+\setbeamercolor{frametitle}{fg=black}
+\setbeamercolor{section title}{fg=black}
+\setbeamercolor{title}{fg=black}
+\setbeamercolor{author}{fg=black}
+\setbeamercolor{date}{fg=black}
+
+% Navigation
+\setbeamertemplate{navigation symbols}{}
+
+% Page number
+\setbeamertemplate{footline}{
+  \hfill
+  \usebeamerfont{page number in head/foot}
+  \insertframenumber
+  \hspace{1em}
+  \vspace{1em}
+}
+
+% Section title slides
+\setbeamertemplate{section page}{
+  \begin{centering}
+    \vfill
+    {\usebeamerfont{section title}
+     \usebeamercolor[fg]{section title}
+     \insertsection\par}
+    \vfill
+  \end{centering}
+}
+
+\AtBeginSection{
+  \frame[plain]{\sectionpage}
+}
