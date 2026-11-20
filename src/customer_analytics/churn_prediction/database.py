@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import re
+import xgboost as xgb
 
 from sqlalchemy import text
 from sqlalchemy.engine.base import Engine
@@ -181,7 +182,8 @@ class ClassifierDataIterator:
         split,
         batch_size=10_000,
         start_date=None,
-        end_date=None
+        end_date=None,
+        sample_size=None
     ):
 
         valid_splits = {"train", "validation", "test"}
@@ -197,6 +199,7 @@ class ClassifierDataIterator:
         self.batch_size = batch_size
         self.start_date = start_date
         self.end_date = end_date
+        self.sample_size = sample_size
 
         self.conn = None
         self.generator = None
@@ -221,9 +224,15 @@ class ClassifierDataIterator:
         )
 
         query = text("""
-            SELECT *
-            FROM churn_model_dataset
-            WHERE dataset_split = :dataset_split
+            WITH eligible AS (
+                SELECT
+                    ctid,
+                    customer_id,
+                    cutoff_date,
+                    DATE_TRUNC('month', cutoff_date) AS month,
+                    churned
+                FROM churn_model_dataset
+                WHERE dataset_split = :split
                 AND age IS NOT NULL
                 AND (
                     CAST(:start_date AS DATE) IS NULL
@@ -231,19 +240,88 @@ class ClassifierDataIterator:
                 )
                 AND (
                     CAST(:end_date AS DATE) IS NULL
-                    OR cutoff_date < CAST(:end_date AS DATE)
+                    OR cutoff_date <= CAST(:end_date AS DATE)
                 )
-            ORDER BY cutoff_date
+            ),
+
+            group_counts AS (
+                SELECT
+                    month,
+                    churned,
+                    COUNT(*) AS group_size
+                FROM eligible
+                GROUP BY month, churned
+            ),
+
+            allocations AS (
+                SELECT
+                    month,
+                    churned,
+                    group_size,
+                    FLOOR(
+                        group_size::FLOAT * :sample_size / SUM(group_size) OVER ()
+                    ) AS base_sample,
+                    MOD(
+                        group_size::NUMERIC * :sample_size
+                        / SUM(group_size) OVER (),
+                        1
+                    ) AS remainder
+                FROM group_counts
+            ),
+
+            final_allocations AS (
+                SELECT
+                    month,
+                    churned,
+                    LEAST(
+                        group_size,
+                        base_sample + CASE
+                            WHEN ROW_NUMBER() OVER (
+                                ORDER BY remainder DESC, month, churned
+                            ) <= :sample_size - SUM(base_sample) OVER ()
+                            THEN 1
+                            ELSE 0
+                        END
+                    ) AS sample_count
+                FROM allocations
+            ),
+
+            ranked AS (
+                SELECT
+                    e.ctid,
+                    ROW_NUMBER() OVER (
+                        PARTITION BY e.month, e.churned
+                        ORDER BY
+                            hashtextextended(
+                                CONCAT_WS('|', e.customer_id::TEXT, e.cutoff_date::TEXT),
+                                42
+                            ),
+                            e.customer_id,
+                            e.cutoff_date
+                    ) AS row_num,
+                    a.sample_count
+                FROM eligible e
+                JOIN final_allocations a
+                ON e.month IS NOT DISTINCT FROM a.month
+                AND e.churned IS NOT DISTINCT FROM a.churned
+            )
+
+            SELECT d.*
+            FROM ranked r
+            JOIN churn_model_dataset d ON d.ctid = r.ctid
+            WHERE r.row_num <= r.sample_count
+            ORDER BY d.cutoff_date
         """)
 
         try:
             chunks = pd.read_sql_query(
                 query,
                 self.conn,
-                params={
-                    "dataset_split": self.split,
+                params = {
+                    "split": self.split,
                     "start_date": self.start_date,
-                    "end_date": self.end_date
+                    "end_date": self.end_date,
+                    "sample_size": self.sample_size
                 },
                 chunksize=self.batch_size
             )
@@ -287,3 +365,28 @@ class ClassifierDataIterator:
 
         finally:
             self._close()
+
+
+class XGBoostDataIterator(xgb.DataIter):
+
+    def __init__(self, data_iterator, cache_prefix):
+        self.data_iterator = data_iterator
+        self.cache_prefix = cache_prefix
+        self.generator = None
+
+        super().__init__(cache_prefix=cache_prefix)
+
+    def reset(self):
+        self.generator = iter(self.data_iterator.get_batches())
+
+    def next(self, input_data):
+        if self.generator is None:
+            self.reset()
+
+        try:
+            X, y = next(self.generator)
+        except StopIteration:
+            return False
+
+        input_data(data=X, label=y)
+        return True
